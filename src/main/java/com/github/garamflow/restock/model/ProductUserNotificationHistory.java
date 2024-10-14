@@ -19,9 +19,11 @@ public class ProductUserNotificationHistory {
     @JoinColumn(name = "user_id")
     private User user;
 
-    private Integer reStockRound; // 재입고 회차
+    // 재입고 회차
+    private Integer reStockRound;
 
-    private LocalDateTime notificationSentAt; // 발송 날짜
+    // 알림 발송 날짜
+    private LocalDateTime notificationSentAt;
 
     public ProductUserNotificationHistory(Product product, User user, Integer reStockRound, LocalDateTime notificationSentAt) {
         this.product = product;

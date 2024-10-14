@@ -1,10 +1,12 @@
 package com.github.garamflow.restock.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 
 @Entity
+@Getter
 public class ProductUserNotification {
 
     @Id
@@ -19,7 +21,8 @@ public class ProductUserNotification {
     @JoinColumn(name = "user_id")
     private User user;
 
-    private Boolean isActive; // 알림 활성화 여부
+    // 알림 활성화 여부
+    private Boolean isActive;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
