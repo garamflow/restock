@@ -13,12 +13,13 @@ public class ProductNotificationHistory {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private Product product;
-    private Integer reStockRound; // 재입고 회차
+    private Integer reStockRound;
 
     @Enumerated(EnumType.STRING)
     private NotificationStatus status;
 
-    private Long lastNotifiedUserId; // 마지막 알림 발송 유저 아이디
+    // 마지막 알림 발송 유저의 아이디
+    private Long lastNotifiedUserId;
 
     private LocalDateTime createdAt;
 
