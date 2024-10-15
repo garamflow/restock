@@ -12,24 +12,26 @@ public class ProductNotificationHistory {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
-    private Product product;
-    private Integer reStockRound;
+    private Product product; // 상품과의 관계
 
     @Enumerated(EnumType.STRING)
-    private NotificationStatus status;
+    private NotificationStatus status; // 알림 상태
 
     // 마지막 알림 발송 유저의 아이디
     private Long lastNotifiedUserId;
 
-    private LocalDateTime createdAt;
+    private LocalDateTime notificationSentAt;
 
-    public ProductNotificationHistory(Product product, Integer reStockRound, NotificationStatus status, Long lastNotifiedUserId) {
+    public ProductNotificationHistory(Product product, NotificationStatus status, Long lastNotifiedUserId) {
         this.product = product;
-        this.reStockRound = reStockRound;
         this.status = status;
         this.lastNotifiedUserId = lastNotifiedUserId;
-        this.createdAt = LocalDateTime.now();
+        this.notificationSentAt = LocalDateTime.now();
     }
 
     protected ProductNotificationHistory() {}
+
+    public Integer getReSockRound() {
+        return product.getReStockRound();
+    }
 }
