@@ -3,7 +3,7 @@ services:
     build: .
     ports:
       - 8080:8080
-    # my-db의 컨테이너가 생성되고 healthy 하다고 판단 될 때, 해당 컨테이너를 생성한다.
+    # mysql-db의 컨테이너가 생성되고 healthy 하다고 판단 될 때, 해당 컨테이너를 생성한다.
     depends_on:
       mysql-db:
         condition: service_healthy
