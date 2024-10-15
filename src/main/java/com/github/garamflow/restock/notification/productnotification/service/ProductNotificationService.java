@@ -5,6 +5,6 @@ import com.github.garamflow.restock.model.ProductNotificationHistory;
 import java.util.List;
 
 public interface ProductNotificationService {
-    List<ProductNotificationHistory> getNotificationHistoryByProduct(Long productId);
-    void saveNotificationHistory(ProductNotificationHistory history);
+    // 재입고 알림을 전송하는 메서드
+    void sendReStockNotification(Long productId);
 }

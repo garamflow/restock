@@ -22,15 +22,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void incrementStockRound(Long productId) {
+    public void incrementReStockRound(Long productId) {
         Product product = getProductById(productId);
         product.incrementReStockRound();
         productRepository.save(product);
-    }
-
-    @Override
-    public boolean isOutofStock(Long productId) {
-        Product product = getProductById(productId);
-        return product.isOutOfStock();
     }
 }

@@ -4,6 +4,5 @@ import com.github.garamflow.restock.model.Product;
 
 public interface ProductService {
     Product getProductById(Long productId);
-    void incrementStockRound(Long productId);
-    boolean isOutofStock(Long productId);
+    void incrementReStockRound(Long productId);
 }

@@ -34,4 +34,8 @@ public class ProductNotificationHistory {
     public Integer getReSockRound() {
         return product.getReStockRound();
     }
+
+    public void changeStatus(NotificationStatus newStatus) {
+        this.status = newStatus;
+    }
 }
