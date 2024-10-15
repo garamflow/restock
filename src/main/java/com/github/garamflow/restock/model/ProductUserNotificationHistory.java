@@ -5,6 +5,9 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(indexes = {
+        @Index(name = "idx_product_user_notification_history", columnList = "product_id, user_id")
+})
 public class ProductUserNotificationHistory {
 
     @Id

@@ -5,6 +5,10 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(indexes = {
+        @Index(name="idx_product_id", columnList = "product_id"),
+        @Index(name="idx_notificationSentAt", columnList = "notificationSentAt")
+})
 public class ProductNotificationHistory {
 
     @Id @GeneratedValue(strategy = GenerationType.AUTO)

@@ -7,6 +7,10 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@Table(indexes = {
+        @Index(name = "idx_product_user", columnList = "product_id, user_id"),
+        @Index(name = "idx_isActive", columnList = "isActive")
+})
 public class ProductUserNotification {
 
     @Id
