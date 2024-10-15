@@ -1,5 +1,6 @@
 package com.github.garamflow.restock.notification.productnotification.service;
 
+import com.github.garamflow.restock.common.ratelimiter.RateLimiterService;
 import com.github.garamflow.restock.model.Product;
 import com.github.garamflow.restock.model.ProductNotificationHistory;
 import com.github.garamflow.restock.model.NotificationStatus;
@@ -22,13 +23,15 @@ public class ProductNotificationServiceImpl implements ProductNotificationServic
     private final ProductService productService;
     private final ProductUserNotificationService userNotificationService;
     private final ProductNotificationHistoryRepository historyRepository;
+    private final RateLimiterService rateLimiterService;  // RateLimiterService 주입
 
     public ProductNotificationServiceImpl(ProductService productService,
                                           ProductUserNotificationService userNotificationService,
-                                          ProductNotificationHistoryRepository historyRepository) {
+                                          ProductNotificationHistoryRepository historyRepository, RateLimiterService rateLimiterService) {
         this.productService = productService;
         this.userNotificationService = userNotificationService;
         this.historyRepository = historyRepository;
+        this.rateLimiterService = rateLimiterService;
     }
 
     @Override
@@ -48,29 +51,32 @@ public class ProductNotificationServiceImpl implements ProductNotificationServic
 
         // 4. 알림 상태: 전송 시작 (IN_PROGRESS)
         for (ProductUserNotification userNotification : activeUserNotifications) {
-            try {
-                // 알림 전송 시작 (IN_PROGRESS)
-                createAndSaveHistory(product, userNotification.getUser().getId(), NotificationStatus.IN_PROGRESS);
+            if(rateLimiterService.tryConsume()) {
+                try {
+                    // 알림 전송 시작 (IN_PROGRESS)
+                    createAndSaveHistory(product, userNotification.getUser().getId(), NotificationStatus.IN_PROGRESS);
 
-                // 실제 알림 전송 로직 (여기서는 로그로 대체)
-                logger.info("Notification sent to user {} for product {}", userNotification.getUser().getUsername(), product.getName());
+                    // 실제 알림 전송 로직 (여기서는 로그로 대체)
+                    logger.info("Notification sent to user {} for product {}", userNotification.getUser().getUsername(), product.getName());
 
-                // 알림 상태: 전송 완료 (COMPLETED)
-                createAndSaveHistory(product, userNotification.getUser().getId(), NotificationStatus.COMPLETED);
+                    // 알림 상태: 전송 완료 (COMPLETED)
+                    createAndSaveHistory(product, userNotification.getUser().getId(), NotificationStatus.COMPLETED);
 
+                } catch (Exception e) {
+                    logger.error("Failed to send notification to user {}", userNotification.getUser().getUsername(), e);
+                    createAndSaveHistory(product, userNotification.getUser().getId(), NotificationStatus.CANCELLED_BY_ERROR);
+                    throw new RuntimeException("Failed to send notification to user " + userNotification.getUser().getUsername(), e);
+                }
 
-            } catch (Exception e) {
-                logger.error("Failed to send notification to user {}", userNotification.getUser().getUsername(), e);
-                createAndSaveHistory(product, userNotification.getUser().getId(), NotificationStatus.CANCELLED_BY_ERROR);
-                throw new RuntimeException("Failed to send notification to user " + userNotification.getUser().getUsername(), e);
-            }
+                // 5. 재고 확인 후 품절 상태일 경우 중단
+                if (product.isOutOfStock()) {
+                    createAndSaveHistory(product, userNotification.getUser().getId(), NotificationStatus.CANCELLED_BY_SOLD_OUT);
+                    logger.warn("Notification process stopped due to out of stock for product {}", product.getName());
 
-            // 5. 재고 확인 후 품절 상태일 경우 중단
-            if (product.isOutOfStock()) {
-                createAndSaveHistory(product, userNotification.getUser().getId(), NotificationStatus.CANCELLED_BY_SOLD_OUT);
-                logger.warn("Notification process stopped due to out of stock for product {}", product.getName());
-
-                break;  // 품절로 인해 알림 전송 중단
+                    break;  // 품절로 인해 알림 전송 중단
+                }
+            } else {
+                logger.warn("Rate Limit exceeded");
             }
         }
     }
