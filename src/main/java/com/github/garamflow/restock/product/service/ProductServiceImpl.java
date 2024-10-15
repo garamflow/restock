@@ -1,6 +1,7 @@
 package com.github.garamflow.restock.product.service;
 
 import com.github.garamflow.restock.model.Product;
+import com.github.garamflow.restock.model.StockStatus;
 import com.github.garamflow.restock.product.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +26,12 @@ public class ProductServiceImpl implements ProductService {
     public void incrementReStockRound(Long productId) {
         Product product = getProductById(productId);
         product.incrementReStockRound();
+        productRepository.save(product);
+    }
+
+    @Override
+    public void createProduct(String name, StockStatus stockStatus) {
+        Product product = new Product(name, stockStatus);
         productRepository.save(product);
     }
 }
