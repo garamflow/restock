@@ -31,7 +31,8 @@ public class ProductUserNotificationHistory {
         this.notificationSentAt = notificationSentAt;
     }
 
-    protected ProductUserNotificationHistory() {}
+    protected ProductUserNotificationHistory() {
+    }
 
     public Integer getReStockRound() {
         return product.getReStockRound();

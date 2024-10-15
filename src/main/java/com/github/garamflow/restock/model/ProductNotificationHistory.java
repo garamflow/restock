@@ -6,12 +6,13 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(indexes = {
-        @Index(name="idx_product_id", columnList = "product_id"),
-        @Index(name="idx_notificationSentAt", columnList = "notificationSentAt")
+        @Index(name = "idx_product_id", columnList = "product_id"),
+        @Index(name = "idx_notificationSentAt", columnList = "notificationSentAt")
 })
 public class ProductNotificationHistory {
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -33,7 +34,8 @@ public class ProductNotificationHistory {
         this.notificationSentAt = LocalDateTime.now();
     }
 
-    protected ProductNotificationHistory() {}
+    protected ProductNotificationHistory() {
+    }
 
     public Integer getReSockRound() {
         return product.getReStockRound();

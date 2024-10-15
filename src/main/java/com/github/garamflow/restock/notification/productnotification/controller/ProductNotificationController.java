@@ -3,7 +3,10 @@ package com.github.garamflow.restock.notification.productnotification.controller
 import com.github.garamflow.restock.notification.productnotification.service.ProductNotificationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/products/{productId}/notifications")
@@ -17,6 +20,7 @@ public class ProductNotificationController {
 
     /**
      * 재입고 알림 전송 API
+     *
      * @param productId 재입고 알림을 보낼 상품 ID
      * @return 성공 메시지 또는 에러 메시지
      */

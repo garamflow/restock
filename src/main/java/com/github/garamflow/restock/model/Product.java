@@ -9,7 +9,8 @@ import java.time.LocalDateTime;
 @Getter
 public class Product {
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String name;
@@ -28,7 +29,8 @@ public class Product {
         this.createdAt = LocalDateTime.now();
     }
 
-    protected Product() {}
+    protected Product() {
+    }
 
     public void incrementReStockRound() {
         this.reStockRound++;

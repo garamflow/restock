@@ -39,5 +39,6 @@ public class ProductUserNotification {
         this.updatedAt = LocalDateTime.now();
     }
 
-    protected ProductUserNotification() {}
+    protected ProductUserNotification() {
+    }
 }

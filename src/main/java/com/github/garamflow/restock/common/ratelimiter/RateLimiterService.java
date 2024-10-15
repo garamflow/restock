@@ -1,8 +1,6 @@
 package com.github.garamflow.restock.common.ratelimiter;
 
-import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;
-import io.github.bucket4j.Refill;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;

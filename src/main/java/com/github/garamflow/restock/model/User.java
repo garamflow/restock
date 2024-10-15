@@ -12,7 +12,8 @@ import java.time.LocalDateTime;
 @Getter
 public class User {
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String username;
     private LocalDateTime createdAt;
@@ -22,5 +23,6 @@ public class User {
         this.createdAt = LocalDateTime.now();
     }
 
-    protected User() {}
+    protected User() {
+    }
 }
